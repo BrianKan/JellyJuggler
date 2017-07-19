@@ -8,5 +8,25 @@ import com.badlogic.gdx.Preferences;
  */
 
 public class AppPreferences {
-    protected Preferences getPrefs(){return Gdx.app.getPreferences("JellyJuggler");}
+
+    protected Preferences getPrefs(){
+        return Gdx.app.getPreferences("JellyJuggler");
+    }
+
+    public void enableSounds(boolean soundEnable){
+        getPrefs().putBoolean("sound.enabled",soundEnable);
+        getPrefs().flush();
+    }
+
+    public void enableMusic(boolean musicEnable){
+        getPrefs().putBoolean("music.enabled",musicEnable);
+        getPrefs().flush();
+    }
+
+    public boolean isMusicEnabled() {
+        return getPrefs().getBoolean("music.enabled", true);
+    }
+    public boolean isSoundEnabled() {
+        return getPrefs().getBoolean("sound.enabled", true);
+    }
 }
