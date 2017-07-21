@@ -19,7 +19,7 @@ android {
     }
     defaultConfig {
         applicationId "com.redfish.jellyjuggler"
-        minSdkVersion 9
+        minSdkVersion 14
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -134,4 +134,8 @@ idea {
             }
         }
     }
+}
+
+dependencies {
+    compile 'com.google.android.gms:play-services-ads:11.0.2'
 }

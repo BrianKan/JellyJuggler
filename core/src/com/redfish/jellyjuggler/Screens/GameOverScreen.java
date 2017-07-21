@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.redfish.jellyjuggler.JellyJuggler;
@@ -15,10 +16,12 @@ import com.redfish.jellyjuggler.JellyJuggler;
 public class GameOverScreen implements Screen, InputProcessor {
     private JellyJuggler parent;
     private Stage stage;
+    private Texture gameOverText;
 
     public GameOverScreen(JellyJuggler parent){
         this.parent=parent;
         stage=new Stage(new ScreenViewport());
+        gameOverText=new Texture(Gdx.files.internal("gameOver.png"));
     }
 
     @Override
@@ -32,8 +35,10 @@ public class GameOverScreen implements Screen, InputProcessor {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(),1/30f));
         stage.getBatch().begin();
         stage.getBatch().draw(parent.background,0,0,parent.SCREEN_WIDTH,parent.SCREEN_HEIGHT);
+        stage.getBatch().draw(gameOverText,120,420,250,200);
         stage.getBatch().end();
         stage.draw();
 

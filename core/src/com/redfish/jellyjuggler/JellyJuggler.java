@@ -12,22 +12,29 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.redfish.jellyjuggler.Screens.GameOverScreen;
+import com.redfish.jellyjuggler.Screens.GameScreen;
 import com.redfish.jellyjuggler.Screens.MenuScreen;
 import com.redfish.jellyjuggler.Screens.PreferencesScreen;
+import com.redfish.jellyjuggler.adMob.AdsController;
+import com.redfish.jellyjuggler.adMob.DummyAdsController;
 
 public class JellyJuggler extends Game {
-	//Screens
+
 	private MenuScreen menuScreen;
-
-
-	//App Preferences
 	private AppPreferences preferences;
-	//Get Screen Size
 	public static float SCREEN_WIDTH;
 	public static float SCREEN_HEIGHT;
-
+	public static Integer playerScore=0;
+	public AdsController adsController;
 
     public static Texture background;
+
+	public JellyJuggler(AdsController adsController){
+		if(adsController!=null)
+			this.adsController=adsController;
+		else
+			this.adsController=new DummyAdsController();
+	}
 
 
 	@Override
@@ -37,6 +44,7 @@ public class JellyJuggler extends Game {
 
 		preferences = new AppPreferences();
         background=new Texture(Gdx.files.internal("bg.jpg"));
+
 
 		menuScreen=new MenuScreen(this);
 		setScreen(menuScreen);
@@ -51,7 +59,7 @@ public class JellyJuggler extends Game {
 				this.setScreen(new MenuScreen(this));
 				break;
 			case 1:
-//				this.setScreen(new PreferencesScreen(this));
+				this.setScreen(new GameScreen(this));
 				break;
 			case 2:
 				this.setScreen(new PreferencesScreen(this));

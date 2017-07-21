@@ -37,6 +37,9 @@ public class MenuScreen implements Screen {
         Skin skin = new Skin(Gdx.files.internal("skin/flat-earth-ui.json"));
         title=new Texture(Gdx.files.internal("title.png"));
 
+        if(parent.getPreferences().isAdsEnabled()){
+            parent.adsController.showBannerAd();
+        }
 
         TextButton newGame=new TextButton("New Game",skin);
         TextButton preferences=new TextButton("Preferences",skin);
@@ -47,7 +50,7 @@ public class MenuScreen implements Screen {
         stage.addActor(table);
 
 
-        table.add(newGame).fillX().uniformX();
+        table.add(newGame).width(parent.SCREEN_WIDTH/2);
         table.row().pad(10,0,10,0);
         table.add(preferences).fillX().uniformX();
         table.row();
@@ -69,8 +72,7 @@ public class MenuScreen implements Screen {
         exit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-//               Gdx.app.exit();
-                parent.switchScreen(3);
+               Gdx.app.exit();
             }
         });
     }

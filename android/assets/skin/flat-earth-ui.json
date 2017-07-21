@@ -79,11 +79,11 @@ com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 	}
 	checkbox-c: {
 		name: checkbox
-		color: color
+		color: white
 	}
 	checkbox-pressed-c: {
 		name: checkbox-pressed
-		color: color
+		color: white
 	}
 	list-c: {
 		name: list
@@ -263,7 +263,7 @@ com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 		checkboxOn: checkbox-pressed-c
 		checkboxOff: checkbox-c
 		font: button
-		fontColor: color
+		fontColor: white
 		downFontColor: pressed
 		overFontColor: highlight
 	}
@@ -271,7 +271,7 @@ com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 		checkboxOn: radio-pressed-c
 		checkboxOff: checkbox-c
 		font: button
-		fontColor: color
+		fontColor: white
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
