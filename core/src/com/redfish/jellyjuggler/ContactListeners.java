@@ -20,7 +20,6 @@ public class ContactListeners implements ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
-        System.out.println("Contact");
         Fixture fa = contact.getFixtureA();
 
         if(fa.getBody().getUserData()=="hello"){

@@ -38,7 +38,7 @@ public class GameOverScreen implements Screen, InputProcessor {
         stage.act(Math.min(Gdx.graphics.getDeltaTime(),1/30f));
         stage.getBatch().begin();
         stage.getBatch().draw(parent.background,0,0,parent.SCREEN_WIDTH,parent.SCREEN_HEIGHT);
-        stage.getBatch().draw(gameOverText,120,420,250,200);
+        stage.getBatch().draw(gameOverText,parent.SCREEN_WIDTH/2-parent.SCREEN_WIDTH/4.2f,parent.SCREEN_HEIGHT/2+parent.SCREEN_HEIGHT/8,parent.SCREEN_WIDTH/2,parent.SCREEN_HEIGHT/4.7f);
         stage.getBatch().end();
         stage.draw();
 

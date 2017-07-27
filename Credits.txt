@@ -1,3 +1,6 @@
 Shutterstock - Background and Jelly Images
 Free GDX UI skins - Earth Skin
 Stack Overflow - Tracking HitBodies
+http://www.norakomi.com/tutorial_admob_part2_banner_ads1.php - AdMob Tutorial
+http://www.iforce2d.net/b2dtut/explosions - Explosions Tutorial
+https://github.com/polluxx/git_repo/blob/master/Mass/src/com/mass/WorldRenderer.java - Explosions in Java

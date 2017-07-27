@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.redfish.jellyjuggler.JellyJuggler;
 
 /**
@@ -38,7 +39,7 @@ public class PreferencesScreen implements Screen {
 
     public PreferencesScreen(JellyJuggler parent){
         this.parent=parent;
-        stage=new Stage(new ScreenViewport());
+        stage=new Stage(new StretchViewport(480,800));
 
     }
 
@@ -132,12 +133,12 @@ public class PreferencesScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.getBatch().begin();
-        stage.getBatch().draw(parent.background,0,0,parent.SCREEN_WIDTH,parent.SCREEN_HEIGHT);
-        stage.getBatch().draw(dialogBox,80,230,300,300);
+        stage.getBatch().draw(parent.background,0,0,480,800);
+        stage.getBatch().draw(dialogBox,80,260,300,300);
         stage.getBatch().end();
 
         stage.draw();

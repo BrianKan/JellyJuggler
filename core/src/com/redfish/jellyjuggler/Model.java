@@ -35,6 +35,8 @@ public class Model {
 
 
     }
+
+
     private void createCeiling(int x) {
 
         BodyDef bodyDef = new BodyDef();

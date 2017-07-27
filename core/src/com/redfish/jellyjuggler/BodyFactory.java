@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class BodyFactory {
     private World world;
-    private static Random rng;
+//    private static Random rng;
     public static final int STEEL = 0;
     public static final int WOOD = 1;
     public static final int RUBBER = 2;
@@ -27,7 +27,7 @@ public class BodyFactory {
 
     public static BodyFactory getInstance(World world){
         BodyFactory thisInstance;
-        rng=new Random();
+//        rng=new Random();
         thisInstance = new BodyFactory(world);
         return thisInstance;
     }
@@ -65,11 +65,11 @@ public class BodyFactory {
     }
 
 
-    public Body makeBoxPolyBody(float posx, float posy, float width, float height,int material, BodyDef.BodyType bodyType){
-        return makeBoxPolyBody(posx, posy, width, height, material, bodyType, false);
+    public Body makeBoxPolyBody(float posx, float posy, float width, float height,int material, BodyDef.BodyType bodyType, int jellyType){
+        return makeBoxPolyBody(posx, posy, width, height, material, bodyType, false, jellyType);
     }
 
-    public Body makeBoxPolyBody(float posx, float posy, float width, float height, int material, BodyDef.BodyType bodyType, boolean fixedRotation){
+    public Body makeBoxPolyBody(float posx, float posy, float width, float height, int material, BodyDef.BodyType bodyType, boolean fixedRotation, int jellyType){
 
         BodyDef boxBodyDef = new BodyDef();
         boxBodyDef.type = bodyType;
@@ -79,8 +79,8 @@ public class BodyFactory {
 
         Body boxBody = world.createBody(boxBodyDef);
         PolygonShape poly = new PolygonShape();
-        int numb=rng.nextInt(3);
-        boxBody.setUserData(numb);
+//        int numb=rng.nextInt(4);
+        boxBody.setUserData(jellyType);
         poly.setAsBox(width/2, height/2);
         boxBody.createFixture(makeFixture(material,poly));
         poly.dispose();

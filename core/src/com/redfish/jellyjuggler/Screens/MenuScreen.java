@@ -4,14 +4,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.redfish.jellyjuggler.JellyJuggler;
 
@@ -24,9 +31,15 @@ public class MenuScreen implements Screen {
     private Stage stage;
     private Texture title;
 
+
     public MenuScreen(JellyJuggler parent){
         this.parent=parent;
-        stage=new Stage(new ScreenViewport());
+        stage=new Stage(new StretchViewport(480,800));
+
+        // TODO Animation 2
+//        sb= new SpriteBatch();
+//        textureAtlas=new TextureAtlas(Gdx.files.internal("leaves.png"));
+//        leafAnimation=new Animation(1/10f,textureAtlas.getRegions());
     }
 
     @Override
@@ -44,18 +57,25 @@ public class MenuScreen implements Screen {
         TextButton newGame=new TextButton("New Game",skin);
         TextButton preferences=new TextButton("Preferences",skin);
         TextButton exit=new TextButton("Exit",skin);
-
+        Label empty = new Label("",skin);
 
         table.setFillParent(true);
         stage.addActor(table);
+//
+//        table.add(empty).height(parent.SCREEN_WIDTH/15);
+//        table.row().pad(10,0,parent.SCREEN_HEIGHT/75,0);
+//        table.add(newGame).width(parent.SCREEN_WIDTH/2).height(parent.SCREEN_HEIGHT/17);
+//        table.row().pad(10,0,parent.SCREEN_HEIGHT/75,0);
+//        table.add(preferences).fillX().uniformX().height(parent.SCREEN_HEIGHT/17);
+//        table.row().pad(10,0,parent.SCREEN_HEIGHT/75,0);
+//        table.add(exit).fill().uniformX().height(parent.SCREEN_HEIGHT/17);
 
 
-        table.add(newGame).width(parent.SCREEN_WIDTH/2);
+        table.add(newGame).width(240);
         table.row().pad(10,0,10,0);
         table.add(preferences).fillX().uniformX();
         table.row();
         table.add(exit).fill().uniformX();
-
 
         newGame.addListener(new ChangeListener() {
             @Override
@@ -79,15 +99,17 @@ public class MenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(),1/30f));
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 
         stage.getBatch().begin();
-        stage.getBatch().draw(parent.background,0,0,parent.SCREEN_WIDTH,parent.SCREEN_HEIGHT);
-        stage.getBatch().draw(title,120,480,250,154);
+        stage.getBatch().draw(parent.background, 0, 0, 480, 800);
+        stage.getBatch().draw(title, 120, 480, 250, 154);
+//        stage.getBatch().draw(title,parent.SCREEN_WIDTH/2-parent.SCREEN_WIDTH/4.2f,parent.SCREEN_HEIGHT/2+parent.SCREEN_HEIGHT/8,parent.SCREEN_WIDTH/2,parent.SCREEN_HEIGHT/4.7f);
         stage.getBatch().end();
+
         stage.draw();
     }
 

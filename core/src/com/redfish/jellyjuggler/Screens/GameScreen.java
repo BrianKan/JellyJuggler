@@ -40,6 +40,7 @@ public class GameScreen implements Screen,InputProcessor {
     private Texture jellyTexture;
     private Texture jellyTexture2;
     private Texture jellyTexture3;
+    private Texture jellyTexture4;
     private SpriteBatch sb;
     private BitmapFont font;
     private ArrayList<Body> bodies;
@@ -66,6 +67,7 @@ public class GameScreen implements Screen,InputProcessor {
         jellyTexture=new Texture(Gdx.files.internal("GreenJelly.png"));
         jellyTexture2=new Texture(Gdx.files.internal("BlueJelly.png"));
         jellyTexture3=new Texture(Gdx.files.internal("OrangeJelly.png"));
+        jellyTexture4=new Texture(Gdx.files.internal("BombJelly.png"));
         testPoint=new Vector3(0,0,0);
 
     }
@@ -75,10 +77,16 @@ public class GameScreen implements Screen,InputProcessor {
         model.logicStep(delta);
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        if(parent.playerScore%10==0){
+        if(parent.playerScore==0){
             parent.playerScore++;
-            bodies.add(bodyFactory.makeBoxPolyBody(1,15,6,6,BodyFactory.WOOD, BodyDef.BodyType.DynamicBody));
+            bodies.add(bodyFactory.makeBoxPolyBody(1,15,6,6,BodyFactory.WOOD, BodyDef.BodyType.DynamicBody,rng.nextInt(3)));
         }
+        else if(parent.playerScore%10==0){
+            parent.playerScore++;
+            bodies.add(bodyFactory.makeBoxPolyBody(1,15,6,6,BodyFactory.WOOD, BodyDef.BodyType.DynamicBody,rng.nextInt(4)));
+        }
+
+
         if(model.gameOver){
             model.gameOver=false;
             parent.switchScreen(3);
@@ -128,6 +136,8 @@ public class GameScreen implements Screen,InputProcessor {
             return jellyTexture2;
         else if(body.getUserData().equals(2))
             return jellyTexture3;
+        else if(body.getUserData().equals(3))
+            return jellyTexture4;
         else
             return jellyTexture;
     }
@@ -155,16 +165,46 @@ public class GameScreen implements Screen,InputProcessor {
         model.world.QueryAABB(new QueryCallback() {
                                   @Override
                                   public boolean reportFixture(Fixture fixture) {
+                                      if(fixture.getBody().getType()== BodyDef.BodyType.StaticBody){
+                                          return false;
+                                      }
                                       hitBody = fixture.getBody();
-                                      hitBody.setLinearVelocity(0,0);
-                                      hitBody.applyForceToCenter(new Vector2(rng.nextInt(20000)-10000, 30000), true);
+                                      hitBody.setLinearVelocity(0, 0);
+                                      hitBody.applyForceToCenter(new Vector2(rng.nextInt(20000) - 10000, 30000), true);
                                       parent.playerScore++;
-                                      return true;
+
+                                      if (hitBody.getUserData().equals(3)) {
+                                          bodies.remove(hitBody);
+                                          model.world.destroyBody(hitBody);
+                                           for(Body bod: bodies ){
+                                                applyBlastImpulse(bod,hitBody.getPosition(),bod.getPosition(),10000);
+                                            }
+                                      }
+                                      return false;
                                   }
                               }
                 , testPoint.x - 0.1f, testPoint.y - 0.1f, testPoint.x + 0.1f, testPoint.y + 0.1f);
         return false;
     }
+// from github https://github.com/polluxx/git_repo/blob/master/Mass/src/com/mass/WorldRenderer.java
+    public void applyBlastImpulse(Body body,Vector2 blastCenter,Vector2 applyPoint,int blastPower){
+        Vector2 blastDir;
+        float distance;
+
+        if (body.getType()!= BodyDef.BodyType.DynamicBody){
+            return;
+        }
+
+        blastDir = new Vector2(applyPoint.x-blastCenter.x,applyPoint.y- blastCenter.y);
+        distance = blastCenter.dst(applyPoint);
+        float invDistance=1/distance;
+        if(distance==0){
+            return;
+        }
+        float impulseMag =blastPower*invDistance*invDistance;
+        Vector2 newImpulse=new Vector2(impulseMag*blastDir.x,impulseMag*blastDir.y);
+        body.applyLinearImpulse(newImpulse,applyPoint,true);
+     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
