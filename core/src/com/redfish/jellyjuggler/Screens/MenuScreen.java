@@ -2,6 +2,7 @@ package com.redfish.jellyjuggler.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -45,6 +46,7 @@ public class MenuScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
+
 
         Table table=new Table();
         Skin skin = new Skin(Gdx.files.internal("skin/flat-earth-ui.json"));

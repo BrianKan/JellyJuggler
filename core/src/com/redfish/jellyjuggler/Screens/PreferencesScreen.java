@@ -74,6 +74,12 @@ public class PreferencesScreen implements Screen {
             @Override
             public boolean handle(Event event) {
                 boolean enabled = musicCheckbox.isChecked();
+                if(enabled){
+                    parent.menuMusic.play();
+                }
+                else
+                    parent.menuMusic.stop();
+
                 parent.getPreferences().enableMusic( enabled );
                 return false;
             }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -55,7 +56,17 @@ public class GameScreen implements Screen,InputProcessor {
     private float spriteTime;
     private float animX;
     private float animY;
-    private boolean animActive;
+
+    private static final int FRAME_COLS1=6,FRAME_ROWS1=1;
+    private Texture frostNova;
+    private Animation<TextureRegion> frostAnimation;
+    private float spriteTime2;
+
+
+    //TODO Music
+    private Sound frostSnd;
+    private Sound explodeSnd;
+    private Sound bounceSnd;
 
     public GameScreen(JellyJuggler parent){
         this.parent=parent;
@@ -81,6 +92,12 @@ public class GameScreen implements Screen,InputProcessor {
         jellyTexture4=new Texture(Gdx.files.internal("BombJelly.png"));
         testPoint=new Vector3(0,0,0);
 
+        //TODO Sound Effects
+        explodeSnd=Gdx.audio.newSound(Gdx.files.internal("explodeBomb.wav"));
+        frostSnd=Gdx.audio.newSound(Gdx.files.internal("iceNova.wav"));
+
+        animX=0;
+        animY=0;
         //TODO Animation
         explosion=new Texture(Gdx.files.internal("poof.png"));
         TextureRegion[][] tmp=TextureRegion.split(explosion,explosion.getWidth(),explosion.getHeight()/FRAME_ROWS);
@@ -92,7 +109,19 @@ public class GameScreen implements Screen,InputProcessor {
             }
         }
         animation=new Animation<TextureRegion>(0.10f,explodeAnim);
-        spriteTime=0f;
+        spriteTime=0.6f;
+
+        frostNova=new Texture(Gdx.files.internal("frostNova.png"));
+        TextureRegion[][] tmp1=TextureRegion.split(frostNova,frostNova.getWidth()/FRAME_COLS1,frostNova.getHeight()/FRAME_ROWS1);
+        TextureRegion[] frostAnim=new TextureRegion[FRAME_COLS1*FRAME_ROWS1];
+        int index1=0;
+        for(int i =0;i<FRAME_ROWS1;i++){
+            for(int j=0;j<FRAME_COLS1;j++){
+                frostAnim[index1++]=tmp1[i][j];
+            }
+        }
+        frostAnimation=new Animation<TextureRegion>(0.10f,frostAnim);
+        spriteTime2=0.6f;
     }
 
     @Override
@@ -105,14 +134,41 @@ public class GameScreen implements Screen,InputProcessor {
         if(!animation.isAnimationFinished(spriteTime)) {
             spriteTime += Gdx.graphics.getDeltaTime();
         }
+        if(!animation.isAnimationFinished(spriteTime2)) {
+            spriteTime2 += Gdx.graphics.getDeltaTime();
+        }
 
         if(parent.playerScore==0){
             parent.playerScore++;
-            bodies.add(bodyFactory.makeBoxPolyBody(1,15,6,6,BodyFactory.WOOD, BodyDef.BodyType.DynamicBody,rng.nextInt(3)));
+            bodies.add(bodyFactory.makeBoxPolyBody(1,15,6,6,BodyFactory.WOOD, BodyDef.BodyType.DynamicBody,0));
+        }
+        else if(parent.playerScore==10){
+            parent.playerScore++;
+            bodies.add(bodyFactory.makeBoxPolyBody(1,15,6,6,BodyFactory.WOOD, BodyDef.BodyType.DynamicBody,2));
+        }
+        else if(parent.playerScore==20){
+            parent.playerScore++;
+            bodies.add(bodyFactory.makeBoxPolyBody(1,15,6,6,BodyFactory.WOOD, BodyDef.BodyType.DynamicBody,0));
+        }
+        else if(parent.playerScore==30){
+            parent.playerScore++;
+            bodies.add(bodyFactory.makeBoxPolyBody(1,15,6,6,BodyFactory.WOOD, BodyDef.BodyType.DynamicBody,3));
+        }
+        else if(parent.playerScore==40){
+            parent.playerScore++;
+            bodies.add(bodyFactory.makeBoxPolyBody(1,15,6,6,BodyFactory.WOOD, BodyDef.BodyType.DynamicBody,3));
+        }
+        else if(parent.playerScore==50){
+            parent.playerScore++;
+            bodies.add(bodyFactory.makeBoxPolyBody(1,15,6,6,BodyFactory.WOOD, BodyDef.BodyType.DynamicBody,1));
+        }
+        else if(parent.playerScore==50){
+            parent.playerScore++;
+            bodies.add(bodyFactory.makeBoxPolyBody(1,15,6,6,BodyFactory.WOOD, BodyDef.BodyType.DynamicBody,1));
         }
         else if(parent.playerScore%10==0){
             parent.playerScore++;
-            bodies.add(bodyFactory.makeBoxPolyBody(1,15,6,6,BodyFactory.WOOD, BodyDef.BodyType.DynamicBody,rng.nextInt(6)));
+            bodies.add(bodyFactory.makeBoxPolyBody(1,15,6,6,BodyFactory.WOOD, BodyDef.BodyType.DynamicBody,rng.nextInt(4)));
         }
 
 
@@ -126,12 +182,16 @@ public class GameScreen implements Screen,InputProcessor {
 
         //TODO Animation
         TextureRegion currentFrame=animation.getKeyFrame(spriteTime,true);
+        TextureRegion currentFrame1=frostAnimation.getKeyFrame(spriteTime2,true);
 
         sb.begin();
         font.getData().setScale(0.3f);
         font.draw(sb,parent.playerScore.toString(),-2,23);
         for(Body bod:bodies){
             sb.draw(randomJelly(bod),bod.getPosition().x-3, bod.getPosition().y-3,6,6);
+        }
+        if(!frostAnimation.isAnimationFinished(spriteTime2)){
+            sb.draw(currentFrame1, animX, animY, 25, 25);
         }
         if(!animation.isAnimationFinished(spriteTime)) {
             sb.draw(currentFrame, animX, animY, 25, 25);
@@ -171,7 +231,7 @@ public class GameScreen implements Screen,InputProcessor {
             return jellyTexture2;
         else if(body.getUserData().equals(2))
             return jellyTexture3;
-        else if(body.getUserData().equals(3)||body.getUserData().equals(4)||body.getUserData().equals(5)||body.getUserData().equals(6))
+        else if(body.getUserData().equals(3))
             return jellyTexture4;
         else
             return jellyTexture;
@@ -208,7 +268,23 @@ public class GameScreen implements Screen,InputProcessor {
                                       hitBody.applyForceToCenter(new Vector2(rng.nextInt(20000) - 10000, 30000), true);
                                       parent.playerScore++;
 
-                                      if (hitBody.getUserData().equals(3)||hitBody.getUserData().equals(4)||hitBody.getUserData().equals(5)||hitBody.getUserData().equals(6)) {
+                                      if (hitBody.getUserData().equals(1)) {
+                                          // Playing the sound
+                                          if(parent.getPreferences().isSoundEnabled())
+                                              frostSnd.play();
+                                          bodies.remove(hitBody);
+                                          animX=hitBody.getPosition().x-12.5f;
+                                          animY=hitBody.getPosition().y-12.5f;
+                                          spriteTime2=0;
+                                          model.world.destroyBody(hitBody);
+                                          for(Body bod: bodies ){
+                                              bod.setLinearVelocity(0,0);
+                                          }
+                                      }
+                                      else
+                                      if (hitBody.getUserData().equals(3)) {
+                                          if(parent.getPreferences().isSoundEnabled())
+                                              explodeSnd.play();
                                           bodies.remove(hitBody);
                                           animX=hitBody.getPosition().x-12.5f;
                                           animY=hitBody.getPosition().y-12.5f;

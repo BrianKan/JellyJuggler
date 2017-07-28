@@ -3,6 +3,7 @@ package com.redfish.jellyjuggler;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -27,6 +28,8 @@ public class JellyJuggler extends Game {
 	public static Integer playerScore=0;
 	public AdsController adsController;
 
+	public Music menuMusic;
+
     public static Texture background;
 
 	public JellyJuggler(AdsController adsController){
@@ -41,6 +44,10 @@ public class JellyJuggler extends Game {
 	public void create () {
 		SCREEN_WIDTH =Gdx.graphics.getWidth();
 		SCREEN_HEIGHT=Gdx.graphics.getHeight();
+
+		menuMusic= Gdx.audio.newMusic(Gdx.files.internal("forest.wav"));
+		menuMusic.setLooping(true);
+		menuMusic.play();
 
 		preferences = new AppPreferences();
         background=new Texture(Gdx.files.internal("bg.jpg"));
