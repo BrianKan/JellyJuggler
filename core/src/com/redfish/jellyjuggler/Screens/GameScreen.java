@@ -162,7 +162,7 @@ public class GameScreen implements Screen,InputProcessor {
             parent.playerScore++;
             bodies.add(bodyFactory.makeBoxPolyBody(1,15,6,6,BodyFactory.WOOD, BodyDef.BodyType.DynamicBody,1));
         }
-        else if(parent.playerScore==50){
+        else if(parent.playerScore==60){
             parent.playerScore++;
             bodies.add(bodyFactory.makeBoxPolyBody(1,15,6,6,BodyFactory.WOOD, BodyDef.BodyType.DynamicBody,1));
         }
@@ -170,6 +170,9 @@ public class GameScreen implements Screen,InputProcessor {
             parent.playerScore++;
             bodies.add(bodyFactory.makeBoxPolyBody(1,15,6,6,BodyFactory.WOOD, BodyDef.BodyType.DynamicBody,rng.nextInt(4)));
         }
+
+        if(parent.playerScore>parent.getPreferences().getHiScore())
+            parent.getPreferences().setHiScore(parent.playerScore);
 
 
         if(model.gameOver){
@@ -278,6 +281,8 @@ public class GameScreen implements Screen,InputProcessor {
                                           spriteTime2=0;
                                           model.world.destroyBody(hitBody);
                                           for(Body bod: bodies ){
+                                              if(bod.getUserData().equals(0))
+                                                  bod.setUserData(1);
                                               bod.setLinearVelocity(0,0);
                                           }
                                       }

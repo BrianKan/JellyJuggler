@@ -35,6 +35,8 @@ public class PreferencesScreen implements Screen {
     private Label music;
     private Label empty;
     private Label ads;
+    private Label hiScoreText;
+    private Label hiScore;
 
 
     public PreferencesScreen(JellyJuggler parent){
@@ -58,6 +60,8 @@ public class PreferencesScreen implements Screen {
         sounds = new Label("Sounds", skin,"button",Color.WHITE);
         music = new Label("Music", skin,"button",Color.WHITE);
         ads = new Label("Ads Enabled", skin,"button",Color.WHITE);
+        hiScoreText = new Label("High Score:", skin,"button",Color.WHITE);
+        hiScore = new Label(parent.getPreferences().getHiScore()+"", skin,"button",Color.WHITE);
         empty = new Label(" ",skin);
 
         title.setFontScale(1.25f);
@@ -134,6 +138,13 @@ public class PreferencesScreen implements Screen {
         table.row();
         table.add(empty);
         table.row();
+        table.add(hiScoreText);
+        table.row();
+        table.add(hiScore);
+        table.row();
+        table.add(empty);
+        table.row();
+
         table.add(backButton);
     }
 
@@ -144,7 +155,7 @@ public class PreferencesScreen implements Screen {
 
         stage.getBatch().begin();
         stage.getBatch().draw(parent.background,0,0,480,800);
-        stage.getBatch().draw(dialogBox,80,260,300,300);
+        stage.getBatch().draw(dialogBox,80,255,300,300);
         stage.getBatch().end();
 
         stage.draw();

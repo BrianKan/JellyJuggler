@@ -18,6 +18,11 @@ public class AppPreferences {
         return preferences;
     }
 
+    public void setHiScore(int highScore){
+        getPrefs().putInteger("High Score",highScore);
+        getPrefs().flush();
+    }
+
     public void enableAds(boolean adsEnable){
         getPrefs().putBoolean("ads.enabled",adsEnable);
         getPrefs().flush();
@@ -32,6 +37,7 @@ public class AppPreferences {
         getPrefs().flush();
     }
 
+    public int getHiScore(){return getPrefs().getInteger("High Score",0);};
     public boolean isMusicEnabled() {
         return getPrefs().getBoolean("music.enabled", true);
     }
