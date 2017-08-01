@@ -95,6 +95,7 @@ public class GameScreen implements Screen,InputProcessor {
         //TODO Sound Effects
         explodeSnd=Gdx.audio.newSound(Gdx.files.internal("explodeBomb.wav"));
         frostSnd=Gdx.audio.newSound(Gdx.files.internal("iceNova.wav"));
+        bounceSnd=Gdx.audio.newSound(Gdx.files.internal("bounce.wav"));
 
         animX=0;
         animY=0;
@@ -270,8 +271,11 @@ public class GameScreen implements Screen,InputProcessor {
                                       hitBody.setLinearVelocity(0, 0);
                                       hitBody.applyForceToCenter(new Vector2(rng.nextInt(20000) - 10000, 30000), true);
                                       parent.playerScore++;
-
-                                      if (hitBody.getUserData().equals(1)) {
+                                      if(hitBody.getUserData().equals(0)||hitBody.getUserData().equals(2)) {
+                                          if (parent.getPreferences().isSoundEnabled())
+                                              bounceSnd.play();
+                                      }
+                                      else if (hitBody.getUserData().equals(1)) {
                                           // Playing the sound
                                           if(parent.getPreferences().isSoundEnabled())
                                               frostSnd.play();
